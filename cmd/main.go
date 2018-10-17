@@ -10,11 +10,10 @@ import (
 )
 
 func isOlder(t time.Time, days int) bool {
-	hours := time.Duration(days*24) * time.Hour
-	return time.Now().Sub(t) > hours*time.Hour
+	return time.Now().Sub(t) > 1*time.Hour
 }
 
-func getFiles(location string, days int) error {
+func getFiles(location string, days int) ([]string, error) {
 	var files []string
 	err := filepath.Walk(location, func(path string, info os.FileInfo, err error) error {
 		files = append(files, path)
@@ -24,11 +23,20 @@ func getFiles(location string, days int) error {
 		log.Fatal(err)
 	}
 
+	test := make([]string, 0)
+
 	for _, file := range files {
-		fmt.Println(file)
+		at, err := os.Stat(file)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if isOlder(at.ModTime(), days) {
+			test = append(test, file)
+		}
+
 	}
 
-	return err
+	return test, err
 
 }
 
@@ -39,6 +47,13 @@ func main() {
 	flag.IntVar(&days, "days", 0, "days to poll")
 	flag.Parse()
 
-	_ = getFiles(location, days)
+	files, err := getFiles(location, days)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, file := range files {
+		fmt.Println(file)
+	}
 
 }
