@@ -1,9 +1,0 @@
-{
-    "baseURL": "http://dvr.linuxrocker.com",
-    "plexPyContext": "/plexpy",
-    "plexPyAPIKey": "6b707d0439a2449a9bcaed8c6f042de0",
-    "plexToken": "K1WCALqRK5HVzSQ1J3bM",
-    "plexHost": "http://172.19.0.105",
-    "plexPort": 32400,
-    "telegramToken": "568753422:AAEpsvhrB4RQA4QGEFwutFmTFkE_zjjzHSQ"
-}
