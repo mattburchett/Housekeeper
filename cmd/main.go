@@ -55,5 +55,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	locator.GetCount(cfg, sectionID)
+	locator.GetTitles(cfg, sectionID, days)
 }

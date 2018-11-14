@@ -6,9 +6,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/config"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/model"
+	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/util"
 )
 
 func GetCount(config config.Config, sectionID int) int {
@@ -42,6 +44,56 @@ func GetCount(config config.Config, sectionID int) int {
 	return count
 }
 
-func getTitles(config config.Config, sectionID int) string {
+// GetTitles will gather a list of information from the media in the library, based on the previous count.
+func GetTitles(config config.Config, sectionID int, days int) string {
+	count := GetCount(config, sectionID)
+
+	titlesURL := fmt.Sprintf("%s%s%s%s%s%d%s%d", config.BaseURL, config.PlexPyContext, "/api/v2?apikey=", config.PlexPyAPIKey, "&cmd=get_library_media_info&section_id=", sectionID, "&order_column=last_played&refresh=true&order_dir=asc&length=", count)
+
+	req, err := http.NewRequest(http.MethodGet, titlesURL, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	httpClient := http.Client{}
+	req.Header.Set("User-Agent", "Housekeeper")
+
+	res, getErr := httpClient.Do(req)
+	if getErr != nil {
+		log.Fatal(getErr)
+	}
+
+	body, readErr := ioutil.ReadAll(res.Body)
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
+	titleModel := model.PlexPyMediaInfo{}
+	jsonErr := json.Unmarshal(body, &titleModel)
+	if jsonErr != nil {
+		log.Fatal(jsonErr)
+	}
+
+	data := titleModel.Response.Data.Data
+	// titles := make([]string, 0)
+
+	epoch := util.SubtractedEpoch(days)
+
+	for _, i := range data {
+		if i.LastPlayed < epoch {
+			fmt.Println(i.Title)
+		}
+		if i.LastPlayed < 0 {
+			stri, err := strconv.Atoi(i.AddedAt)
+			if err != nil {
+				log.Fatal(err)
+			}
+			if int64(stri) < epoch {
+				fmt.Println(i.Title)
+			}
+		}
+	}
+
+	return string(epoch)
 
 }
