@@ -12,6 +12,10 @@ type Config struct {
 	BaseURL       string `json:"baseURL"`
 	PlexPyContext string `json:"plexPyContext"`
 	PlexPyAPIKey  string `json:"plexPyAPIKey"`
+	PlexToken     string `json:"plexToken"`
+	PlexHost      string `json:"plexHost"`
+	PlexPort      int    `json:"plexPort"`
+	TelegramToken string `json:"telegramToken"`
 }
 
 //GetConfig gets the configuration values for the api using the file in the supplied configPath.
