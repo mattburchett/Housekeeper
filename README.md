@@ -8,7 +8,8 @@ Please use the example configuration file for configuration.
 
 The command line args that can be passed: 
 
-```Usage of ./housekeeper:
+```
+Usage of ./housekeeper:
   -c string
         Configuration to load
   -check
@@ -18,4 +19,5 @@ The command line args that can be passed:
   -delete
         Perform the delete task.
   -sectionid int
-        pick a section ID```
+        pick a section ID
+```
