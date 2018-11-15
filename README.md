@@ -13,11 +13,11 @@ Usage of ./housekeeper:
   -c string
         Configuration to load
   -check
-        Perform only a check. Do not delete. (default true)
+        Perform only a check. This will send the message out to Telegram with what can be removed. Does not delete. (default true)
   -days int
-        days to poll
+        How many days of inactivity to look for on Plex.
   -delete
         Perform the delete task.
   -sectionid int
-        pick a section ID
+        Plex Section ID
 ```

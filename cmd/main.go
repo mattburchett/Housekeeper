@@ -45,9 +45,9 @@ func main() {
 	var delete bool
 
 	flag.StringVar(&c, "c", "", "Configuration to load")
-	flag.IntVar(&days, "days", 0, "days to poll")
-	flag.IntVar(&sectionID, "sectionid", 0, "pick a section ID")
-	flag.BoolVar(&check, "check", true, "Perform only a check. Do not delete.")
+	flag.IntVar(&days, "days", 0, "How many days of inactivity to look for on Plex.")
+	flag.IntVar(&sectionID, "sectionid", 0, "Plex Section ID")
+	flag.BoolVar(&check, "check", true, "Perform only a check. This will send the message out to Telegram with what can be removed. Does not delete.")
 	flag.BoolVar(&delete, "delete", false, "Perform the delete task.")
 	flag.Parse()
 	if c == "" {
