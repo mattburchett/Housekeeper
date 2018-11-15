@@ -1,6 +1,6 @@
 # Housekeeper
 
-Housekeeper is a cleanup tool for Plex environements. 
+Housekeeper is a cleanup tool for Plex environments. 
 
 It requires two things - Plex and PlexPy (now known as Tautulli). It has a option for communicating with Telegram for cleanup purposes.
 
