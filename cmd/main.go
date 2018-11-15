@@ -44,7 +44,7 @@ func main() {
 	var check bool
 	var delete bool
 
-	flag.StringVar(&c, "c", "", "Configuration to load")
+	flag.StringVar(&c, "config", "", "Configuration to load")
 	flag.IntVar(&days, "days", 0, "How many days of inactivity to look for on Plex.")
 	flag.IntVar(&sectionID, "sectionid", 0, "Plex Section ID")
 	flag.BoolVar(&check, "check", true, "Perform only a check. This will send the message out to Telegram with what can be removed. Does not delete.")

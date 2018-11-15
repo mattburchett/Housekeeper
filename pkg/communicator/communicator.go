@@ -15,7 +15,7 @@ import (
 func TelegramPost(config config.Config, titles []string) error {
 	url := "https://api.telegram.org/bot" + config.TelegramToken + "/sendMessage"
 
-	values := map[string]string{"chat_id": config.TelegramChatID, "text": "The following items are to be removed from " + config.ServerName + " in 24 hours. Please go to Plex and start the title to keep it on" + config.ServerName + ". You do not need to keep watching, just hit play and load a few seconds.\n\n" + fmt.Sprintf("%v", strings.Join(titles, "\n")), "disable_notifications": "true"}
+	values := map[string]string{"chat_id": config.TelegramChatID, "text": "The following items are to be removed from " + config.ServerName + " in 24 hours. Please go to Plex and start the title to keep it on " + config.ServerName + ". You do not need to keep watching, just hit play and load a few seconds.\n\n" + fmt.Sprintf("%v", strings.Join(titles, "\n")), "disable_notifications": "true"}
 
 	jsonValue, _ := json.Marshal(values)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonValue))
