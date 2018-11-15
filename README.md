@@ -10,7 +10,7 @@ The command line args that can be passed:
 
 ```
 Usage of ./housekeeper:
-  -c string
+  -config string
         Configuration to load
   -check
         Perform only a check. This will send the message out to Telegram with what can be removed. Does not delete. (default true)
