@@ -9,13 +9,15 @@ import (
 
 // Config - This struct will hold configuration components.
 type Config struct {
-	BaseURL       string `json:"baseURL"`
-	PlexPyContext string `json:"plexPyContext"`
-	PlexPyAPIKey  string `json:"plexPyAPIKey"`
-	PlexToken     string `json:"plexToken"`
-	PlexHost      string `json:"plexHost"`
-	PlexPort      int    `json:"plexPort"`
-	TelegramToken string `json:"telegramToken"`
+	BaseURL        string `json:"baseURL"`
+	PlexPyContext  string `json:"plexPyContext"`
+	PlexPyAPIKey   string `json:"plexPyAPIKey"`
+	PlexToken      string `json:"plexToken"`
+	PlexHost       string `json:"plexHost"`
+	PlexPort       int    `json:"plexPort"`
+	TelegramToken  string `json:"telegramToken"`
+	TelegramChatID string `json:"telegramChatID"`
+	ServerName     string `json:"serverName"`
 }
 
 //GetConfig gets the configuration values for the api using the file in the supplied configPath.

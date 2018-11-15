@@ -4,7 +4,9 @@ import (
 	"flag"
 	"log"
 
+	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/communicator"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/config"
+	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/eraser"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/locator"
 )
 
@@ -39,10 +41,14 @@ func main() {
 	var c string
 	var days int
 	var sectionID int
+	var check bool
+	var delete bool
 
 	flag.StringVar(&c, "c", "", "Configuration to load")
 	flag.IntVar(&days, "days", 0, "days to poll")
 	flag.IntVar(&sectionID, "sectionid", 0, "pick a section ID")
+	flag.BoolVar(&check, "check", true, "Perform only a check. Do not delete.")
+	flag.BoolVar(&delete, "delete", false, "Perform the delete task.")
 	flag.Parse()
 	if c == "" {
 		log.Fatal("You need to specify a configuration file.")
@@ -55,5 +61,22 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	locator.GetTitles(cfg, sectionID, days)
+
+	ids, titles := locator.GetTitles(cfg, sectionID, days)
+
+	if check {
+		err = communicator.TelegramPost(cfg, titles)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	if delete {
+		files := eraser.LookupFileLocation(cfg, ids)
+		err = eraser.DeleteMedia(delete, files)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
 }

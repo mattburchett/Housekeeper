@@ -79,7 +79,7 @@ type XMLPlexAPI struct {
 		Text                  string `xml:",chardata"`
 		RatingKey             string `xml:"ratingKey,attr"`
 		Key                   string `xml:"key,attr"`
-		Guid                  string `xml:"guid,attr"`
+		GUID                  string `xml:"guid,attr"`
 		LibrarySectionTitle   string `xml:"librarySectionTitle,attr"`
 		LibrarySectionID      string `xml:"librarySectionID,attr"`
 		LibrarySectionKey     string `xml:"librarySectionKey,attr"`
