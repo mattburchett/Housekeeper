@@ -10,33 +10,6 @@ import (
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/locator"
 )
 
-// func getFiles(location string, days int) ([]string, error) {
-// 	var files []string
-// 	err := filepath.Walk(location, func(path string, info os.FileInfo, err error) error {
-// 		files = append(files, path)
-// 		return nil
-// 	})
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	test := make([]string, 0)
-
-// 	for _, file := range files {
-// 		at, err := os.Stat(file)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		if isOlder(at.ModTime(), days) {
-// 			test = append(test, file)
-// 		}
-
-// 	}
-
-// 	return test, err
-
-// }
-
 func main() {
 	var c string
 	var days int
@@ -50,6 +23,8 @@ func main() {
 	flag.BoolVar(&check, "check", true, "Perform only a check. This will send the message out to Telegram with what can be removed. Does not delete.")
 	flag.BoolVar(&delete, "delete", false, "Perform the delete task.")
 	flag.Parse()
+
+	// Stop the app if they're missing required flags.
 	if c == "" {
 		log.Fatal("You need to specify a configuration file.")
 	}
