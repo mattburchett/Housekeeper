@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/communicator"
@@ -36,6 +37,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	libraryType := locator.GetLibraryType(cfg, sectionID)
+	fmt.Println(libraryType)
 
 	ids, titles := locator.GetTitles(cfg, sectionID, days)
 

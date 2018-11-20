@@ -21,9 +21,6 @@ func LookupFileLocation(config config.Config, ids []int) []string {
 		plexURL := fmt.Sprintf("%s:%d%s%d%s%s", config.PlexHost, config.PlexPort, "/library/metadata/", i, "/?X-Plex-Token=", config.PlexToken)
 
 		req, err := http.NewRequest(http.MethodGet, plexURL, nil)
-		if err != nil {
-			log.Fatal(err)
-		}
 
 		httpClient := http.Client{}
 		req.Header.Set("User-Agent", "Housekeeper")
