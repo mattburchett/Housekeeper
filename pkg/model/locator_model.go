@@ -48,13 +48,13 @@ type PlexPyMediaInfo struct {
 				VideoResolution      string `json:"video_resolution"`
 				GrandparentRatingKey string `json:"grandparent_rating_key"`
 				AudioChannels        string `json:"audio_channels"`
-				LastPlayed           int64  `json:"last_played"`
+				LastPlayed           int64  `json:"last_played,omitempty"`
 				SectionID            int    `json:"section_id"`
 				PlayCount            int    `json:"play_count"`
 				Bitrate              string `json:"bitrate"`
 				VideoFramerate       string `json:"video_framerate"`
 				MediaIndex           string `json:"media_index"`
-				AddedAt              string `json:"added_at"`
+				AddedAt              int64  `json:"added_at,string"`
 				VideoCodec           string `json:"video_codec"`
 				ParentMediaIndex     string `json:"parent_media_index"`
 			} `json:"data"`

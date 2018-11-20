@@ -83,7 +83,7 @@ func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) 
 	epoch := util.SubtractedEpoch(days)
 
 	for _, i := range data {
-		if i.LastPlayed < epoch {
+		if int64(i.LastPlayed) <= epoch && int64(i.LastPlayed) != 0 {
 			titles = append(titles, i.Title)
 			strirk, err := strconv.Atoi(i.RatingKey)
 			if err != nil {
@@ -91,12 +91,8 @@ func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) 
 			}
 			ids = append(ids, strirk)
 		}
-		if i.LastPlayed < 0 {
-			stri, err := strconv.Atoi(i.AddedAt)
-			if err != nil {
-				log.Fatal(err)
-			}
-			if int64(stri) < epoch {
+		if i.LastPlayed <= 0 {
+			if i.AddedAt <= epoch {
 				titles = append(titles, i.Title)
 				strirk, err := strconv.Atoi(i.RatingKey)
 				if err != nil {
@@ -107,5 +103,6 @@ func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) 
 		}
 	}
 	sort.Strings(titles)
+	fmt.Printf("%v\n", titles)
 	return ids, titles
 }
