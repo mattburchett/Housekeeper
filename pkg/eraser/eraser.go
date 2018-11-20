@@ -81,7 +81,8 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 		}
 
 		for _, v := range fileList {
-			if !isValueInList(v, fileList) {
+			bool := isValueInList(v, fileList)
+			if !bool {
 				results = append(results, v)
 			}
 		}
