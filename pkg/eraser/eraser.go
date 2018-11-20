@@ -49,6 +49,7 @@ func LookupMovieFileLocation(config config.Config, ids []int) []string {
 func LookupTVFileLocation(config config.Config, ids []int) []string {
 	fileList := make([]string, 0)
 	m := make(map[string]bool)
+	results := make([]string, 0)
 
 	for _, i := range ids {
 		plexURL := fmt.Sprintf("%s:%d%s%d%s%s", config.PlexHost, config.PlexPort, "/library/metadata/", i, "/allLeaves/?X-Plex-Token=", config.PlexToken)
@@ -75,7 +76,6 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 		xml.Unmarshal(body, &plexModel)
 
 		plexTV := plexModel.Video
-		results := make([]string, 0)
 
 		for _, i := range plexTV {
 			fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
