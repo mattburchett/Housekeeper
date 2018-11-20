@@ -13,8 +13,8 @@ import (
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/model"
 )
 
-// LookupFileLocation will gather a list of Information based on IDs returned by locator.GetTitles
-func LookupFileLocation(config config.Config, ids []int) []string {
+// LookupMovieFileLocation will gather a list of Information based on IDs returned by locator.GetTitles
+func LookupMovieFileLocation(config config.Config, ids []int) []string {
 	fileList := make([]string, 0)
 
 	for _, i := range ids {
@@ -38,9 +38,46 @@ func LookupFileLocation(config config.Config, ids []int) []string {
 		if err != nil {
 			log.Fatal(err)
 		}
-		plexModel := model.XMLPlexAPI{}
+		plexModel := model.XMLPlexMovieAPI{}
 		xml.Unmarshal(body, &plexModel)
 		fileList = append(fileList, filepath.Dir(plexModel.Video.Media.Part.File))
+	}
+	return fileList
+}
+
+// LookupTVFileLocation will gather a list of Information based on IDs returned by locator.GetTitles
+func LookupTVFileLocation(config config.Config, ids []int) []string {
+	fileList := make([]string, 0)
+
+	for _, i := range ids {
+		plexURL := fmt.Sprintf("%s:%d%s%d%s%s", config.PlexHost, config.PlexPort, "/library/metadata/", i, "/?X-Plex-Token=", config.PlexToken)
+
+		req, err := http.NewRequest(http.MethodGet, plexURL, nil)
+
+		httpClient := http.Client{}
+		req.Header.Set("User-Agent", "Housekeeper")
+
+		res, getErr := httpClient.Do(req)
+		if getErr != nil {
+			log.Fatal(getErr)
+		}
+
+		body, readErr := ioutil.ReadAll(res.Body)
+		if readErr != nil {
+			log.Fatal(readErr)
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		plexModel := model.XMLPlexTVAPI{}
+		xml.Unmarshal(body, &plexModel)
+
+		plexTV := plexModel.Video
+
+		for _, i := range plexTV {
+			fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
+		}
 	}
 	return fileList
 }
