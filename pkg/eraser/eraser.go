@@ -92,17 +92,8 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 	return results
 }
 
-func isValueInList(value string, list []string) bool {
-	for _, v := range list {
-		if v == value {
-			return true
-		}
-	}
-	return false
-}
-
-// DeleteMovies will actually perform the deletion.
-func DeleteMovies(delete bool, files []string) error {
+// DeleteFiles will actually perform the deletion.
+func DeleteFiles(delete bool, files []string) error {
 	var err error
 	if delete {
 		for _, i := range files {
