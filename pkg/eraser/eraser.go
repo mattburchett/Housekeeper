@@ -11,7 +11,6 @@ import (
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/config"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/model"
-	"github.com/forestgiant/sliceutil"
 )
 
 // LookupMovieFileLocation will gather a list of Information based on IDs returned by locator.GetTitles
@@ -49,6 +48,7 @@ func LookupMovieFileLocation(config config.Config, ids []int) []string {
 // LookupTVFileLocation will gather a list of Information based on IDs returned by locator.GetTitles
 func LookupTVFileLocation(config config.Config, ids []int) []string {
 	fileList := make([]string, 0)
+	m := make(map[string]bool)
 
 	for _, i := range ids {
 		plexURL := fmt.Sprintf("%s:%d%s%d%s%s", config.PlexHost, config.PlexPort, "/library/metadata/", i, "/allLeaves/?X-Plex-Token=", config.PlexToken)
@@ -77,9 +77,9 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 		plexTV := plexModel.Video
 
 		for _, i := range plexTV {
-			if sliceutil.Contains(fileList, i.Media.Part.File) {
-				fmt.Println("Already exists.")
-			} else {
+			f := i.Media.Part.File
+			if _, ok := m[f]; !ok {
+				m[f] = true
 				fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
 			}
 		}
