@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/communicator"
@@ -39,7 +38,6 @@ func main() {
 	}
 
 	libraryType := locator.GetLibraryType(cfg, sectionID)
-	fmt.Println(libraryType)
 
 	ids, titles := locator.GetTitles(cfg, sectionID, days)
 
@@ -51,11 +49,17 @@ func main() {
 	}
 
 	if delete {
-		files := eraser.LookupFileLocation(cfg, ids)
-		err = eraser.DeleteMedia(delete, files)
-		if err != nil {
-			log.Println(err)
+		if libraryType == "movie" {
+			files := eraser.LookupFileLocation(cfg, ids)
+			err = eraser.DeleteMovies(delete, files)
+			if err != nil {
+				log.Println(err)
+			}
+			// } else if libraryType == "show" {
+			// 	err = eraser.DeleteTVShows()
+			// 	if err != nil {
+			// 		log.Println(err)
+			// 	}
 		}
 	}
-
 }

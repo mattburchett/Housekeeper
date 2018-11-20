@@ -45,8 +45,8 @@ func LookupFileLocation(config config.Config, ids []int) []string {
 	return fileList
 }
 
-// DeleteMedia will actually perform the deletion.
-func DeleteMedia(delete bool, files []string) error {
+// DeleteMovies will actually perform the deletion.
+func DeleteMovies(delete bool, files []string) error {
 	var err error
 	if delete {
 		for _, i := range files {
