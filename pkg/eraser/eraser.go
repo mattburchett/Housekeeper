@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/config"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/model"
@@ -76,7 +77,10 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 		plexTV := plexModel.Video
 
 		for _, i := range plexTV {
-			fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
+			count := sort.SearchStrings(fileList, i.Media.Part.File)
+			if count == 0 {
+				fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
+			}
 		}
 	}
 	return fileList
