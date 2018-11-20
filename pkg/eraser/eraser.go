@@ -89,7 +89,7 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 		}
 
 	}
-	return fileList
+	return results
 }
 
 func isValueInList(value string, list []string) bool {
