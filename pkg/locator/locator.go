@@ -2,6 +2,7 @@ package locator
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -13,6 +14,44 @@ import (
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/model"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/util"
 )
+
+// GetLibraryType checks to see what type the library is.
+func GetLibraryType(config config.Config, sectionID int) string {
+	typeURL := fmt.Sprintf("%s:%d%s%d%s%s", config.PlexHost, config.PlexPort, "/library/sections/", sectionID, "/?X-Plex-Token=", config.PlexToken)
+
+	req, err := http.NewRequest(http.MethodGet, typeURL, nil)
+	httpClient := http.Client{}
+	req.Header.Set("User-Agent", "Housekeeper")
+
+	res, getErr := httpClient.Do(req)
+	if getErr != nil {
+		log.Fatal(getErr)
+	}
+
+	body, readErr := ioutil.ReadAll(res.Body)
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	typeModel := model.XMLPlexLibraryType{}
+	xml.Unmarshal(body, &typeModel)
+
+	var libraryType string
+
+	if typeModel.Thumb == "/:/resources/movie.png" {
+		libraryType = "movie"
+	} else if typeModel.Thumb == "/:/resources/show.png" {
+		libraryType = "show"
+	} else {
+		log.Fatal("Unsupported library type found. This app only supports movies and shows.")
+	}
+
+	return libraryType
+}
 
 // GetCount will gather a count of media in a specific library, required for GetTitles.
 func GetCount(config config.Config, sectionID int) int {

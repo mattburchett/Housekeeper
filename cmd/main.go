@@ -37,6 +37,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	libraryType := locator.GetLibraryType(cfg, sectionID)
+
 	ids, titles := locator.GetTitles(cfg, sectionID, days)
 
 	if check {
@@ -47,11 +49,18 @@ func main() {
 	}
 
 	if delete {
-		files := eraser.LookupFileLocation(cfg, ids)
-		err = eraser.DeleteMedia(delete, files)
-		if err != nil {
-			log.Println(err)
+		if libraryType == "movie" {
+			files := eraser.LookupMovieFileLocation(cfg, ids)
+			err = eraser.DeleteFiles(delete, files)
+			if err != nil {
+				log.Println(err)
+			}
+		} else if libraryType == "show" {
+			files := eraser.LookupTVFileLocation(cfg, ids)
+			err = eraser.DeleteFiles(delete, files)
+			if err != nil {
+				log.Println(err)
+			}
 		}
 	}
-
 }
