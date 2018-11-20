@@ -103,6 +103,5 @@ func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) 
 		}
 	}
 	sort.Strings(titles)
-	fmt.Printf("%v\n", titles)
 	return ids, titles
 }
