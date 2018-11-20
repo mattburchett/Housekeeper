@@ -77,7 +77,9 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 		plexTV := plexModel.Video
 
 		for _, i := range plexTV {
-			if !sliceutil.Contains(fileList, i.Media.Part.File) {
+			if sliceutil.Contains(fileList, i.Media.Part.File) {
+				fmt.Println("Already exists.")
+			} else {
 				fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
 			}
 		}
