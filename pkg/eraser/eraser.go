@@ -50,7 +50,7 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 	fileList := make([]string, 0)
 
 	for _, i := range ids {
-		plexURL := fmt.Sprintf("%s:%d%s%d%s%s", config.PlexHost, config.PlexPort, "/library/metadata/", i, "/?X-Plex-Token=", config.PlexToken)
+		plexURL := fmt.Sprintf("%s:%d%s%d%s%s", config.PlexHost, config.PlexPort, "/library/metadata/", i, "/allLeaves/?X-Plex-Token=", config.PlexToken)
 
 		req, err := http.NewRequest(http.MethodGet, plexURL, nil)
 
