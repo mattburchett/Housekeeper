@@ -75,12 +75,16 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 		xml.Unmarshal(body, &plexModel)
 
 		plexTV := plexModel.Video
+		results := make([]string, 0)
 
 		for _, i := range plexTV {
-			f := i.Media.Part.File
-			if _, ok := m[f]; !ok {
-				m[f] = true
-				fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
+			fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
+		}
+
+		for _, r := range fileList {
+			if _, ok := m[r]; !ok {
+				m[r] = true
+				results = append(results, r)
 			}
 		}
 
