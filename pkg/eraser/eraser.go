@@ -1,6 +1,7 @@
 package eraser
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/config"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/model"
@@ -90,6 +92,39 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 
 	}
 	return results
+}
+
+func DeleteSeriesFromSonarr(config config.Config, ids []int) {
+	for _, i := range ids {
+		sonarrURL := fmt.Sprintf("%s%s%s%d%s%s", config.BaseURL, config.SonarrContext, "/api/series/", i, "/?deleteFiles=true&apikey=", config.SonarrAPIKey)
+		req, err := http.NewRequest(http.MethodDelete, sonarrURL, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		httpClient := http.Client{}
+		req.Header.Set("User-Agent", "Housekeeper")
+
+		res, getErr := httpClient.Do(req)
+		if getErr != nil {
+			log.Fatal(getErr)
+		}
+
+		body, readErr := ioutil.ReadAll(res.Body)
+		if readErr != nil {
+			log.Fatal(readErr)
+		}
+
+		deleteModel := model.SonarrResponse{}
+		jsonErr := json.Unmarshal(body, &deleteModel)
+		if jsonErr != nil {
+			log.Fatal(jsonErr)
+		}
+
+		if strings.Contains("does not exist", deleteModel.Message) {
+			log.Printf("The following ID does not exist: %v", i)
+		}
+	}
 }
 
 // DeleteFiles will actually perform the deletion.

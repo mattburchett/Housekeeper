@@ -144,3 +144,42 @@ func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) 
 	sort.Strings(titles)
 	return ids, titles
 }
+
+// GetSonarrIDs gets the IDs to delete from the title list in PlexPy.
+func GetSonarrIDs(config config.Config, titles []string) []int {
+	ids := make([]int, 0)
+	sonarrURL := fmt.Sprintf("%s%s%s%s", config.BaseURL, config.SonarrContext, "/api/series?apikey=", config.SonarrAPIKey)
+	req, err := http.NewRequest(http.MethodGet, sonarrURL, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	httpClient := http.Client{}
+	req.Header.Set("User-Agent", "Housekeeper")
+
+	res, getErr := httpClient.Do(req)
+	if getErr != nil {
+		log.Fatal(getErr)
+	}
+
+	body, readErr := ioutil.ReadAll(res.Body)
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
+	sonarrModel := model.SonarrSeries{}
+	jsonErr := json.Unmarshal(body, &sonarrModel)
+	if jsonErr != nil {
+		log.Fatal(jsonErr)
+	}
+
+	for _, r := range sonarrModel {
+		for _, s := range titles {
+			if r.Title == s {
+				ids = append(ids, r.ID)
+			}
+		}
+	}
+
+	return ids
+}
