@@ -230,3 +230,8 @@ type XMLPlexTVAPI struct {
 		} `xml:"Writer"`
 	} `xml:"Video"`
 }
+
+type SonarrResponse struct {
+	Message     string `json:"message"`
+	Description string `json:"description"`
+}

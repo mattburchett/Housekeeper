@@ -57,6 +57,8 @@ func main() {
 			}
 		} else if libraryType == "show" {
 			files := eraser.LookupTVFileLocation(cfg, ids)
+			sonarrIDs := locator.GetSonarrIDs(cfg, titles)
+			eraser.DeleteSeriesFromSonarr(cfg, sonarrIDs)
 			err = eraser.DeleteFiles(delete, files)
 			if err != nil {
 				log.Println(err)

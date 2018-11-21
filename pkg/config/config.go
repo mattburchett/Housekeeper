@@ -18,6 +18,8 @@ type Config struct {
 	TelegramToken  string `json:"telegramToken"`
 	TelegramChatID string `json:"telegramChatID"`
 	ServerName     string `json:"serverName"`
+	SonarrContext  string `json:"sonarrContext"`
+	SonarrAPIKey   string `json:"sonarrAPIKey"`
 }
 
 //GetConfig gets the configuration values for the api using the file in the supplied configPath.
