@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/config"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/model"
@@ -80,7 +79,7 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 		plexTV := plexModel.Video
 
 		for _, i := range plexTV {
-			fileList = append(fileList, filepath.Dir(filepath.Dir(i.Media.Part.File)))
+			fileList = append(fileList, filepath.Dir(i.Media.Part.File))
 		}
 
 		for _, r := range fileList {
@@ -121,9 +120,9 @@ func DeleteSeriesFromSonarr(config config.Config, ids []int) {
 			log.Fatal(jsonErr)
 		}
 
-		if strings.Contains("does not exist", deleteModel.Message) {
-			log.Printf("The following ID does not exist: %v", i)
-		}
+		// if strings.Contains("does not exist", deleteModel.Message) {
+		// 	log.Printf("The following ID does not exist: %v", i)
+		// }
 	}
 }
 
