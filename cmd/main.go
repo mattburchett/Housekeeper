@@ -56,13 +56,13 @@ func main() {
 				log.Println(err)
 			}
 		} else if libraryType == "show" {
-			files := eraser.LookupTVFileLocation(cfg, ids)
+			// files := eraser.LookupTVFileLocation(cfg, ids)
 			sonarrIDs := locator.GetSonarrIDs(cfg, titles)
 			eraser.DeleteSeriesFromSonarr(cfg, sonarrIDs)
-			err = eraser.DeleteFiles(delete, files)
-			if err != nil {
-				log.Println(err)
-			}
+			// err = eraser.DeleteFiles(delete, files)
+			// if err != nil {
+			// 	log.Println(err)
+			// }
 		}
 	}
 }
