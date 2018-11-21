@@ -7,5 +7,7 @@
     "plexPort": 32400,
     "telegramToken": "123456789:ABCDEFG",
     "telegramChatID": "12345678",
-    "serverName": "Plex"
+    "serverName": "Plex",
+    "sonarrContext": "/tv",
+    "sonarrAPIKey": "abc1234"
 }
