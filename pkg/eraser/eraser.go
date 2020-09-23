@@ -134,7 +134,7 @@ func DeleteFiles(delete bool, files []string) error {
 			fmt.Printf("Removing %v\n", i)
 			err = os.RemoveAll(i)
 			if err != nil {
-				log.Fatal(err)
+				log.Println(err)
 			}
 		}
 	}

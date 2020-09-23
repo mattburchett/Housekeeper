@@ -46,3 +46,14 @@ func TelegramPost(config config.Config, titles []string) error {
 
 	return err
 }
+
+// StdoutPost will relay the titles out to stdout.
+func StdoutPost(titles []string) {
+	if len(titles) != 0 {
+		for _, title := range titles {
+			fmt.Println(title)
+		}
+	} else {
+		fmt.Println("There are no titles. Nothing to display.")
+	}
+}
