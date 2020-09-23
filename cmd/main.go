@@ -22,7 +22,7 @@ func main() {
 	flag.IntVar(&days, "days", 0, "How many days of inactivity to look for on Plex.")
 	flag.IntVar(&sectionID, "sectionid", 0, "Plex Section ID")
 	flag.BoolVar(&check, "check", true, "Perform only a check. This will send the message out to Telegram with what can be removed. Does not delete.")
-	flag.BoolVar(&text, "check", false, "This will override the communication to Telegram and print to stdout.")
+	flag.BoolVar(&text, "text", false, "This will override the communication to Telegram and print to stdout.")
 	flag.BoolVar(&delete, "delete", false, "Perform the delete task.")
 	flag.Parse()
 
