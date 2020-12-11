@@ -124,7 +124,6 @@ func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) 
 
 	exclude := strings.Split(config.ExcludeList, ",")
 
-	fmt.Println(exclude)
 	var breakOut bool
 
 	for _, i := range data {
