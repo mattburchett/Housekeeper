@@ -3,6 +3,9 @@ package main
 import (
 	"flag"
 	"log"
+	"sort"
+	"strconv"
+	"strings"
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/communicator"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/config"
@@ -13,14 +16,14 @@ import (
 func main() {
 	var c string
 	var days int
-	var sectionID int
+	var sectionID string
 	var check bool
 	var text bool
 	var delete bool
 
 	flag.StringVar(&c, "config", "", "Configuration to load")
 	flag.IntVar(&days, "days", 0, "How many days of inactivity to look for on Plex.")
-	flag.IntVar(&sectionID, "sectionid", 0, "Plex Section ID")
+	flag.StringVar(&sectionID, "sectionid", "", "Plex Section ID. Multiples can be specified (separated by a comma). Ex: 1,2")
 	flag.BoolVar(&check, "check", true, "Perform only a check. This will send the message out to Telegram with what can be removed. Does not delete.")
 	flag.BoolVar(&text, "text", false, "This will override the communication to Telegram and print to stdout.")
 	flag.BoolVar(&delete, "delete", false, "Perform the delete task.")
@@ -30,7 +33,7 @@ func main() {
 	if c == "" {
 		log.Fatal("You need to specify a configuration file.")
 	}
-	if sectionID == 0 {
+	if sectionID == "" {
 		log.Fatal("You need to specify a section ID for Plex.")
 	}
 
@@ -39,36 +42,47 @@ func main() {
 		log.Fatal(err)
 	}
 
-	libraryType := locator.GetLibraryType(cfg, sectionID)
+	sectionIds := strings.Split(sectionID, ",")
+	titlesFullList := make([]string, 0)
 
-	ids, titles := locator.GetTitles(cfg, sectionID, days)
+	for _, section := range sectionIds {
+		sectionIDConv, _ := strconv.Atoi(section)
+		libraryType := locator.GetLibraryType(cfg, sectionIDConv)
 
-	if check {
-		if text {
-			communicator.StdoutPost(titles)
-		} else {
-			err = communicator.TelegramPost(cfg, titles)
-			if err != nil {
-				log.Fatal(err)
+		ids, titles := locator.GetTitles(cfg, sectionIDConv, days)
+
+		for _, title := range titles {
+			titlesFullList = append(titlesFullList, title)
+		}
+
+		if delete {
+			if libraryType == "movie" {
+				files := eraser.LookupMovieFileLocation(cfg, ids)
+				err = eraser.DeleteFiles(delete, files)
+				if err != nil {
+					log.Println(err)
+				}
+			} else if libraryType == "show" {
+				// files := eraser.LookupTVFileLocation(cfg, ids)
+				sonarrIDs := locator.GetSonarrIDs(cfg, titles)
+				eraser.DeleteSeriesFromSonarr(cfg, sonarrIDs)
+				// err = eraser.DeleteFiles(delete, files)
+				// if err != nil {
+				// 	log.Println(err)
+				// }
 			}
 		}
 	}
 
-	if delete {
-		if libraryType == "movie" {
-			files := eraser.LookupMovieFileLocation(cfg, ids)
-			err = eraser.DeleteFiles(delete, files)
+	if check {
+		sort.Strings(titlesFullList)
+		if text {
+			communicator.StdoutPost(titlesFullList)
+		} else {
+			err = communicator.TelegramPost(cfg, titlesFullList)
 			if err != nil {
-				log.Println(err)
+				log.Fatal(err)
 			}
-		} else if libraryType == "show" {
-			// files := eraser.LookupTVFileLocation(cfg, ids)
-			sonarrIDs := locator.GetSonarrIDs(cfg, titles)
-			eraser.DeleteSeriesFromSonarr(cfg, sonarrIDs)
-			// err = eraser.DeleteFiles(delete, files)
-			// if err != nil {
-			// 	log.Println(err)
-			// }
 		}
 	}
 }
