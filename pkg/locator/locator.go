@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"sort"
 	"strconv"
+	"strings"
 
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/config"
 	"git.linuxrocker.com/mattburchett/Housekeeper/pkg/model"
@@ -121,7 +122,21 @@ func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) 
 
 	epoch := util.SubtractedEpoch(days)
 
+	exclude := strings.Split(config.ExcludeList, ",")
+
+	fmt.Println(exclude)
+	var breakOut bool
+
 	for _, i := range data {
+		for _, ex := range exclude {
+			if strings.Contains(i.Title, ex) {
+				breakOut = true
+			}
+		}
+		if breakOut {
+			breakOut = false
+			continue
+		}
 		if int64(i.LastPlayed) <= epoch && int64(i.LastPlayed) != 0 {
 			titles = append(titles, i.Title)
 			strirk, err := strconv.Atoi(i.RatingKey)

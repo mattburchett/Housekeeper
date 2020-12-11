@@ -20,6 +20,7 @@ type Config struct {
 	ServerName     string `json:"serverName"`
 	SonarrContext  string `json:"sonarrContext"`
 	SonarrAPIKey   string `json:"sonarrAPIKey"`
+	ExcludeList    string `json:"excludeList"` // ExcludeList will be checked against any section.
 }
 
 //GetConfig gets the configuration values for the api using the file in the supplied configPath.
