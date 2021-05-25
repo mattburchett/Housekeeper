@@ -56,7 +56,7 @@ func GetLibraryType(config config.Config, sectionID int) string {
 
 // GetCount will gather a count of media in a specific library, required for GetTitles.
 func GetCount(config config.Config, sectionID int) int {
-	countURL := fmt.Sprintf("%s%s%s%s%s%d", config.PlexPyURL, "/api/v2?apikey=", config.PlexPyAPIKey, "&cmd=get_library&section_id=", sectionID)
+	countURL := fmt.Sprintf("%s%s%s%s%d", config.PlexPyURL, "/api/v2?apikey=", config.PlexPyAPIKey, "&cmd=get_library&section_id=", sectionID)
 	req, err := http.NewRequest(http.MethodGet, countURL, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -90,7 +90,7 @@ func GetCount(config config.Config, sectionID int) int {
 func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) {
 	count := GetCount(config, sectionID)
 
-	titlesURL := fmt.Sprintf("%s%s%s%s%s%d%s%d", config.PlexPyURL, "/api/v2?apikey=", config.PlexPyAPIKey, "&cmd=get_library_media_info&section_id=", sectionID, "&order_column=last_played&refresh=true&order_dir=asc&length=", count)
+	titlesURL := fmt.Sprintf("%s%s%s%s%d%s%d", config.PlexPyURL, "/api/v2?apikey=", config.PlexPyAPIKey, "&cmd=get_library_media_info&section_id=", sectionID, "&order_column=last_played&refresh=true&order_dir=asc&length=", count)
 
 	req, err := http.NewRequest(http.MethodGet, titlesURL, nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func GetTitles(config config.Config, sectionID int, days int) ([]int, []string) 
 // GetSonarrIDs gets the IDs to delete from the title list in PlexPy.
 func GetSonarrIDs(config config.Config, titles []string) []int {
 	ids := make([]int, 0)
-	sonarrURL := fmt.Sprintf("%s%s%s%s", config.SonarrURL, "/api/series?apikey=", config.SonarrAPIKey)
+	sonarrURL := fmt.Sprintf("%s%s%s", config.SonarrURL, "/api/series?apikey=", config.SonarrAPIKey)
 	req, err := http.NewRequest(http.MethodGet, sonarrURL, nil)
 	if err != nil {
 		log.Fatal(err)

@@ -95,7 +95,7 @@ func LookupTVFileLocation(config config.Config, ids []int) []string {
 
 func DeleteSeriesFromSonarr(config config.Config, ids []int) {
 	for _, i := range ids {
-		sonarrURL := fmt.Sprintf("%s%s%s%d%s%s", config.SonarrURL, "/api/series/", i, "/?deleteFiles=true&apikey=", config.SonarrAPIKey)
+		sonarrURL := fmt.Sprintf("%s%s%d%s%s", config.SonarrURL, "/api/series/", i, "/?deleteFiles=true&apikey=", config.SonarrAPIKey)
 		req, err := http.NewRequest(http.MethodDelete, sonarrURL, nil)
 		if err != nil {
 			log.Fatal(err)
