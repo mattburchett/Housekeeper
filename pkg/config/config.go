@@ -9,8 +9,7 @@ import (
 
 // Config - This struct will hold configuration components.
 type Config struct {
-	BaseURL        string `json:"baseURL"`
-	PlexPyContext  string `json:"plexPyContext"`
+	PlexPyURL      string `json:"plexPyURL"`
 	PlexPyAPIKey   string `json:"plexPyAPIKey"`
 	PlexToken      string `json:"plexToken"`
 	PlexHost       string `json:"plexHost"`
@@ -18,7 +17,7 @@ type Config struct {
 	TelegramToken  string `json:"telegramToken"`
 	TelegramChatID string `json:"telegramChatID"`
 	ServerName     string `json:"serverName"`
-	SonarrContext  string `json:"sonarrContext"`
+	SonarrURL      string `json:"sonarrURL"`
 	SonarrAPIKey   string `json:"sonarrAPIKey"`
 	ExcludeList    string `json:"excludeList"` // ExcludeList will be checked against any section.
 }
