@@ -21,7 +21,7 @@ def main():
     # Initialize Housekeeper
     dry_run = config.getboolean("Housekeeper", "dry_run", fallback=True)
     inactive_days = int(config.get("Housekeeper", "inactive_days"))
-    exclude_list = config.get("Housekeeper", "exclude_list")
+    exclude_list = config.get("Housekeeper", "exclude_list", fallback="")
 
     # Initialize Sonarr
     sonarr_api_key = config.get("Sonarr", "api_key")
