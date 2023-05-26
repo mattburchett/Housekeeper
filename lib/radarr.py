@@ -25,14 +25,13 @@ class Radarr:
 
         return ids
 
+    def delete_movies(self, ids):
+        for movie_id in ids:
+            print(f"Deleting movie with ID: {movie_id}")
 
-def delete_movies(self, ids):
-    for movie_id in ids:
-        print(f"Deleting movie with ID: {movie_id}")
+            radarr_url = f"{self.base_url}/api/v3/movie/{movie_id}?deleteFiles=true&apikey={self.api_key}"
+            headers = {"User-Agent": "Housekeeper"}
 
-        radarr_url = f"{self.base_url}/api/v3/movie/{movie_id}?deleteFiles=true&apikey={self.api_key}"
-        headers = {"User-Agent": "Housekeeper"}
-
-        response = requests.delete(radarr_url, headers=headers)
-        if response.status_code != 200:
-            raise ValueError(f"Failed to delete movie with ID: {movie_id}")
+            response = requests.delete(radarr_url, headers=headers)
+            if response.status_code != 200:
+                raise ValueError(f"Failed to delete movie with ID: {movie_id}")
