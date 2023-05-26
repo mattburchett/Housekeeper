@@ -1,0 +1,22 @@
+[Housekeeper]
+dry_run = true
+inactive_days = 365
+exclude_list = Foo,Bar,Any Title,You Want
+
+[Sonarr]
+api_key = YOUR_SONARR_API_KEY
+base_url = http://localhost:8989
+
+[Radarr]
+api_key = YOUR_RADARR_API_KEY
+base_url = http://localhost:7878
+
+[Tautulli]
+api_key = YOUR_TAUTULLI_API_KEY
+base_url = http://localhost:8181
+
+[Plex]
+token = YOUR_PLEX_TOKEN
+base_url = http://localhost:32400
+section_ids = 1,2,3
+
