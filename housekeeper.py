@@ -54,7 +54,7 @@ def main():
         library_type = plex.get_library_type(section_id)
 
         # Get IDs and titles for section.
-        ids, titles = tautulli.get_titles(section_id, inactive_days, exclude_list)
+        titles = tautulli.get_titles(section_id, inactive_days, exclude_list)
 
         # Add titles to full list.
         for title in titles:
