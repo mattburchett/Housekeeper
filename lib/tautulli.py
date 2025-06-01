@@ -41,18 +41,23 @@ class Tautulli:
         exclude = [ex.strip() for ex in exclude_list.split(",")]
 
         for item in data:
+            # Check if item is in exclude list
             exclude_match = False
             for ex in exclude:
-                if ex in item["title"]:
+                if ex and ex in item["title"]:
                     exclude_match = True
                     break
             if exclude_match:
                 continue
 
+            # Check if item meets inactivity criteria
             last_played = item.get("last_played")
-            if last_played is not None and int(last_played) <= epoch:
-                titles.append(item["title"])
-            elif last_played is None and int(item["added_at"]) <= epoch:
+            
+            # Only add to deletion list if:
+            # 1. It has been played before but not within the inactive_days period
+            # 2. OR it has never been played AND was added before the inactive_days period
+            if (last_played is not None and int(last_played) <= epoch) or \
+               (last_played is None and int(item["added_at"]) <= epoch):
                 titles.append(item["title"])
 
         titles.sort()
